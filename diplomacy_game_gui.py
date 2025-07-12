@@ -58,7 +58,9 @@ class GameGUI:
         self.current_player_index = 0
         self.round_counter = 1
         self.main_menu()
-
+        self.log_messages = []
+        self.wealth_log = []
+        
     def main_menu(self):
         self.clear()
         ttk.Label(self.root, text="Main Menu", font=("Arial", 18)).pack(pady=10)
@@ -71,26 +73,27 @@ class GameGUI:
         ttk.Label(self.root, text="Game Settings", font=("Arial", 16)).pack(pady=10)
         self.inputs = {}
         fields = [
-            ("Starting Literacy", "starting_literacy"),
-            ("Starting Capital", "starting_capital"),
-            ("Investment Payoff Low", "inv_pay_low"),
-            ("Investment Payoff High", "inv_pay_high"),
-            ("Investment Penalty Low", "inv_pen_low"),
-            ("Investment Penalty High", "inv_pen_high"),
-            ("Diplomacy Payoff Low", "dip_pay_low"),
-            ("Diplomacy Payoff High", "dip_pay_high"),
-            ("Diplomacy Penalty Low", "dip_pen_low"),
-            ("Diplomacy Penalty High", "dip_pen_high"),
-            ("Trade Payoff Low", "trd_pay_low"),
-            ("Trade Payoff High", "trd_pay_high"),
-            ("Trade Penalty Low", "trd_pen_low"),
-            ("Trade Penalty High", "trd_pen_high"),
+            ("Starting Literacy", "starting_literacy", settings["starting_literacy"]),
+            ("Starting Capital", "starting_capital", settings["starting_capital"]),
+            ("Investment Payoff Low", "inv_pay_low", settings["investment_range"][0]),
+            ("Investment Payoff High", "inv_pay_high", settings["investment_range"][1]),
+            ("Investment Penalty Low", "inv_pen_low", settings["investment_range"][2]),
+            ("Investment Penalty High", "inv_pen_high", settings["investment_range"][3]),
+            ("Diplomacy Payoff Low", "dip_pay_low", settings["diplomacy_range"][0]),
+            ("Diplomacy Payoff High", "dip_pay_high", settings["diplomacy_range"][1]),
+            ("Diplomacy Penalty Low", "dip_pen_low", settings["diplomacy_range"][2]),
+            ("Diplomacy Penalty High", "dip_pen_high", settings["diplomacy_range"][3]),
+            ("Trade Payoff Low", "trd_pay_low", settings["trade_range"][0]),
+            ("Trade Payoff High", "trd_pay_high", settings["trade_range"][1]),
+            ("Trade Penalty Low", "trd_pen_low", settings["trade_range"][2]),
+            ("Trade Penalty High", "trd_pen_high", settings["trade_range"][3]),
         ]
-        for label, key in fields:
+        for label, key, default in fields:
             frame = ttk.Frame(self.root)
             frame.pack(fill='x', padx=10, pady=2)
             ttk.Label(frame, text=label, width=25).pack(side='left')
             entry = ttk.Entry(frame)
+            entry.insert(0, str(default))
             entry.pack(side='left', expand=True, fill='x')
             self.inputs[key] = entry
         ttk.Button(self.root, text="Save Settings", command=self.save_settings).pack(pady=10)
@@ -156,8 +159,25 @@ class GameGUI:
         self.tradecards = [TradeCard() for _ in range(20)]
         self.investmentcards = [InvestmentCard() for _ in range(20)]
         self.diplomacycards = [DiplomacyCard() for _ in range(20)]
+#        self.setup_log_box()
         self.next_turn()
-        
+
+
+
+    # def setup_log_box(self):
+    #     log_frame = ttk.Frame(self.root)
+    #     log_frame.pack(pady=10, fill='both', expand=True)
+    #     ttk.Label(log_frame, text="Turn Log:").pack(anchor='w')
+
+    #     scrollbar = ttk.Scrollbar(log_frame)
+    #     scrollbar.pack(side='right', fill='y')
+
+    #     self.log_box = tk.Text(log_frame, height=10, wrap='word', yscrollcommand=scrollbar.set)
+    #     self.log_box.pack(side='left', fill='both', expand=True)
+
+    #     scrollbar.config(command=self.log_box.yview)
+    #     self.log_box.config(state='disabled')
+
     def card_info(self, card, label):
         frame = ttk.Frame(self.root)
         frame.pack(pady=2)
@@ -173,6 +193,12 @@ class GameGUI:
             self.current_player_index = 0
             self.round_counter += 1
         self.clear()
+
+        # if not hasattr(self, "log_messages"):
+        #     self.log_messages = []
+        # if not hasattr(self, "wealth_log"):
+        #     self.wealth_log = []
+
         player = self.players[self.current_player_index]
         ttk.Label(self.root, text=f"Round {self.round_counter}", font=("Arial", 14)).pack(pady=5)
         ttk.Label(self.root, text=f"{player.name}'s Turn", font=("Arial", 12)).pack(pady=5)
@@ -190,44 +216,144 @@ class GameGUI:
         self.card_info(self.trd_card, "Trade")
         ttk.Button(self.root, text="Trade", command=lambda: self.play_card('T')).pack(pady=5)
 
+        # Log the card selection
+        # card_log = (
+        #     f"[Round {self.round_counter}] {player.name} drew cards: "
+        #     f"Investment(ID {self.inv_card.deets}), Diplomacy(ID {self.dip_card.deets}), Trade(ID {self.trd_card.deets})"
+        # )
+        # self.log_turn(card_log)
+
+        log_frame = ttk.Frame(self.root)
+        log_frame.pack(pady=10, fill='both', expand=True)
+        ttk.Label(log_frame, text="Turn Log:").pack(anchor='w')
+        self.log_box = tk.Text(log_frame, height=10, state='normal', wrap='word')
+        self.log_box.pack(fill='both', padx=5, expand=True)
+        self.log_box.insert('end', '\n'.join(self.log_messages) + '\n')
+        self.log_box.config(state='disabled')
+
+        btn_frame = ttk.Frame(self.root)
+        btn_frame.pack(fill='x', side='bottom')
+        ttk.Button(btn_frame, text="$", width=3, command=self.show_wealth_table).pack(side='right', padx=5, pady=5)
+
+    # #log_turn v1
+    def log_turn(self, message):
+        self.log_messages.append(message)
+        if len(self.log_messages) > 100:
+            self.log_messages.pop(0)
+
+        wealth_snapshot = [round(p.literacy + p.capital, 2) for p in self.players]
+        self.wealth_log.append(wealth_snapshot)
+
+    # #log_turn v2
+    # def log_turn(self, message):
+    #         self.log_messages.append(message)
+    #         if len(self.log_messages) > 100:
+    #             self.log_messages.pop(0)
+
+    #         wealth_snapshot = [round(p.literacy + p.capital, 2) for p in self.players]
+    #         self.wealth_log.append(wealth_snapshot)
+
+    #         self.log_box.config(state='normal')
+    #         tag = 'success' if 'changed to' in message and '(-' not in message else 'failure'
+    #         self.log_box.insert('end', message + '\n', tag)
+    #         self.log_box.see('end')
+    #         self.log_box.tag_config('success', foreground='blue')
+    #         self.log_box.tag_config('failure', foreground='red')
+    #         self.log_box.config(state='disabled')
+
+    def show_wealth_table(self):
+        top = tk.Toplevel(self.root)
+        top.title("Wealth per Round")
+
+        columns = ["Round #"] + [p.name for p in self.players]
+        tree = ttk.Treeview(top, columns=columns, show='headings')
+        for col in columns:
+            tree.heading(col, text=col)
+        tree.pack(fill='both', expand=True)
+
+        for round_index, round_wealth in enumerate(self.wealth_log, 1):
+            values = [f"{round_index}"] + round_wealth
+            tree.insert('', 'end', values=values)
+
     def play_card(self, choice):
         player = self.players[self.current_player_index]
         card = {'I': self.inv_card, 'D': self.dip_card, 'T': self.trd_card}[choice]
         roll = random.randint(1, 12)
         threshold = 12 - math.floor(card.odds * 12)
         result = ""
+        
         if choice == 'I':
+            old_tech = player.technology
+            old_lit = player.literacy
+            old_cap = player.capital
             if roll >= threshold:
                 inc = card.pay_off / (player.literacy + player.capital)
                 player.technology += inc
                 player.literacy -= card.pay_off * card.LKRatio
                 player.capital -= card.pay_off * (1 - card.LKRatio)
-                result = f"Tech +{inc:.4f}, Literacy and Capital reduced"
+                result = (
+                    f"[{player.name}] Rolled {roll}, needed {threshold}. "
+                    f"{player.name}'s Technology changed to {old_tech:.4f}(+{inc:.4f})={player.technology:.4f}"
+                )
             else:
-                player.literacy -= card.penalty * card.LKRatio
-                player.capital -= card.penalty * (1 - card.LKRatio)
-                result = f"Investment failed. Literacy and Capital reduced"
+                lit_pen = card.penalty * card.LKRatio
+                cap_pen = card.penalty * (1 - card.LKRatio)
+                player.literacy -= lit_pen
+                player.capital -= cap_pen
+                result = (
+                    f"[{player.name}] Rolled {roll}, needed {threshold}. "
+                    f"{player.name}'s Literacy changed to {old_lit:.2f}(-{lit_pen:.2f})={player.literacy:.2f}, "
+                    f"Capital changed to {old_cap:.2f}(-{cap_pen:.2f})={player.capital:.2f}"
+                )
+
         elif choice == 'D':
             partner = random.choice([p for p in self.players if p != player])
+            old_dip = player.diplomacy[partner.name]
             if roll >= threshold:
                 player.diplomacy[partner.name] += card.pay_off
-                result = f"Diplomacy with {partner.name} +{card.pay_off:.2f}"
+                result = (
+                    f"[{player.name}] Rolled {roll}, needed {threshold}. "
+                    f"{player.name}'s Diplomacy with {partner.name} changed to "
+                    f"{old_dip:.2f}(+{card.pay_off:.2f})={player.diplomacy[partner.name]:.2f}"
+                )
             else:
                 player.diplomacy[partner.name] -= card.penalty
-                result = f"Diplomacy with {partner.name} -{card.penalty:.2f}"
+                result = (
+                    f"[{player.name}] Rolled {roll}, needed {threshold}. "
+                    f"{player.name}'s Diplomacy with {partner.name} changed to "
+                    f"{old_dip:.2f}(-{card.penalty:.2f})={player.diplomacy[partner.name]:.2f}"
+                )
+
         elif choice == 'T':
             partner = random.choice([p for p in self.players if p != player])
+            old_lit = player.literacy
+            old_cap = player.capital
             if roll >= threshold:
                 gain = (card.pay_off * player.technology) + player.diplomacy[partner.name]
-                player.capital += gain * (1 - card.LKRatio)
-                player.literacy += gain * card.LKRatio
-                result = f"Trade succeeded. Literacy and Capital increased"
+                lit_gain = gain * card.LKRatio
+                cap_gain = gain * (1 - card.LKRatio)
+                player.capital += cap_gain
+                player.literacy += lit_gain
+                result = (
+                    f"[{player.name}] Rolled {roll}, needed {threshold}. "
+                    f"Capital changed to {old_cap:.2f}(+{cap_gain:.2f})={player.capital:.2f}, "
+                    f"Literacy changed to {old_lit:.2f}(+{lit_gain:.2f})={player.literacy:.2f}"
+                )
             else:
                 loss = card.penalty - player.diplomacy[partner.name]
-                player.capital -= loss * (1 - card.LKRatio)
-                player.literacy -= loss * card.LKRatio
-                result = f"Trade failed. Literacy and Capital decreased"
-        messagebox.showinfo("Turn Result", f"Roll: {roll} (Target ≥ {threshold})\n{result}")
+                lit_loss = loss * card.LKRatio
+                cap_loss = loss * (1 - card.LKRatio)
+                player.capital -= cap_loss
+                player.literacy -= lit_loss
+                result = (
+                    f"[{player.name}] Rolled {roll}, needed {threshold}. "
+                    f"Capital changed to {old_cap:.2f}(-{cap_loss:.2f})={player.capital:.2f}, "
+                    f"Literacy changed to {old_lit:.2f}(-{lit_loss:.2f})={player.literacy:.2f}"
+                )
+
+
+        # messagebox.showinfo("Turn Result", f"Roll: {roll} (Target ≥ {threshold})\n{result}")
+        self.log_turn(result)
         self.current_player_index += 1
         self.next_turn()
 
