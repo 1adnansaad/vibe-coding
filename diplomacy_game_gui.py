@@ -159,24 +159,58 @@ class GameGUI:
         self.tradecards = [TradeCard() for _ in range(20)]
         self.investmentcards = [InvestmentCard() for _ in range(20)]
         self.diplomacycards = [DiplomacyCard() for _ in range(20)]
-#        self.setup_log_box()
+        self.clear()
         self.next_turn()
 
 
 
-    # def setup_log_box(self):
-    #     log_frame = ttk.Frame(self.root)
-    #     log_frame.pack(pady=10, fill='both', expand=True)
-    #     ttk.Label(log_frame, text="Turn Log:").pack(anchor='w')
+    def setup_log_box(self):
+        log_frame = ttk.Frame(self.root)
+        log_frame.pack(side='right', pady=10, fill='both', expand=True)
+        ttk.Label(log_frame, text="Turn Log:").pack(anchor='w')
 
-    #     scrollbar = ttk.Scrollbar(log_frame)
-    #     scrollbar.pack(side='right', fill='y')
+        self.log_box = tk.Text(log_frame, height=10, width=10, wrap='word', state='normal')
+        self.log_box.pack(fill='both', padx=5, expand=True)
 
-    #     self.log_box = tk.Text(log_frame, height=10, wrap='word', yscrollcommand=scrollbar.set)
-    #     self.log_box.pack(side='left', fill='both', expand=True)
+        # Define 5 cycling color styles
+        log_colors = ['#2b4f81', '#6e4b2b', '#000000', '#6e4b2b', '#2b4f81']  # Blue-Brown-Black-Brown-Blue
+        for i, color in enumerate(log_colors):
+            self.log_box.tag_config(f'color{i}', foreground=color)
+        self.log_box.tag_config('bold', font=('TkDefaultFont', 10, 'bold'))
 
-    #     scrollbar.config(command=self.log_box.yview)
-    #     self.log_box.config(state='disabled')
+        for idx, line in enumerate(self.log_messages):
+            color_tag = f'color{idx % 5}'
+            tags = (color_tag, 'bold') if idx == len(self.log_messages) - 1 else (color_tag,)
+            self.log_box.insert('end', line + '\n', tags)
+
+        self.log_box.config(state='disabled')
+        self.log_box.see('end')
+
+
+    def setup_player_stats_box(self):
+        stats_frame = ttk.Frame(self.root)
+        stats_frame.pack(side='left', pady=10, padx=10, fill='y')
+
+        ttk.Label(stats_frame, text="Player Stats").pack(anchor='w')
+
+        self.stats_box = tk.Text(stats_frame, height=15, width=40, state='normal')
+        self.stats_box.pack(fill='both', expand=True)
+
+        # Button for diplomacy matrix
+        ttk.Button(stats_frame, text="<3 Diplomacy <3", command=self.show_diplomacy_matrix).pack(pady=5)
+
+
+        stats_content = ""
+        for player in self.players:
+            stats_content += f"{player.name}\n"
+            stats_content += f"  Literacy: {player.literacy:.2f}\n"
+            stats_content += f"  Capital: {player.capital:.2f}\n"
+            stats_content += f"  Technology: {player.technology:.2f}\n"
+            stats_content += "-" * 30 + "\n"
+
+        self.stats_box.insert('end', stats_content)
+        self.stats_box.config(state='disabled')
+        
 
     def card_info(self, card, label):
         frame = ttk.Frame(self.root)
@@ -188,11 +222,45 @@ class GameGUI:
             ttk.Label(frame, text=f"Payoff: +{card.pay_off:.2f}, Penalty: -{card.penalty:.2f}, Odds: {100 * (1 - card.odds):.2f}%").pack()
         return frame
     
+    def choose_partner(self, player, action_type):
+        top = tk.Toplevel(self.root)
+        top.title(f"Choose Partner for {action_type}")
+        ttk.Label(top, text=f"{player.name}, choose a partner for {action_type}:").pack(pady=10)
+
+        selected = tk.StringVar()
+
+        def select_and_close(name):
+            selected.set(name)
+            top.destroy()
+
+        for p in self.players:
+            if p != player:
+                if action_type == "Diplomacy":
+                    stat_value = player.diplomacy.get(p.name, 0)
+                    label = f"{p.name} (Diplomacy: {stat_value:.2f})"
+                elif action_type == "Trade":
+                    stat_value = player.diplomacy.get(p.name, 0)
+                    label = f"{p.name} (Dip. XP: {stat_value:.2f})"
+                else:
+                    label = p.name
+                ttk.Button(top, text=label, command=lambda name=p.name: select_and_close(name)).pack(pady=2, padx=20, fill='x')
+
+        top.grab_set()
+        top.wait_window()
+
+        name = selected.get()
+        return next((p for p in self.players if p.name == name), None)
+
+
     def next_turn(self):
         if self.current_player_index >= len(self.players):
+            
+            wealth_snapshot = [round(p.literacy + p.capital, 2) for p in self.players]
+            self.wealth_log.append(wealth_snapshot)
+            
             self.current_player_index = 0
             self.round_counter += 1
-        self.clear()
+        # self.clear()
 
         # if not hasattr(self, "log_messages"):
         #     self.log_messages = []
@@ -223,13 +291,13 @@ class GameGUI:
         # )
         # self.log_turn(card_log)
 
-        log_frame = ttk.Frame(self.root)
-        log_frame.pack(pady=10, fill='both', expand=True)
-        ttk.Label(log_frame, text="Turn Log:").pack(anchor='w')
-        self.log_box = tk.Text(log_frame, height=10, state='normal', wrap='word')
-        self.log_box.pack(fill='both', padx=5, expand=True)
-        self.log_box.insert('end', '\n'.join(self.log_messages) + '\n')
-        self.log_box.config(state='disabled')
+        # log_frame = ttk.Frame(self.root)
+        # log_frame.pack(pady=10, fill='both', expand=True)
+        # ttk.Label(log_frame, text="Turn Log:").pack(anchor='w')
+        # self.log_box = tk.Text(log_frame, height=10, state='normal', wrap='word')
+        # self.log_box.pack(fill='both', padx=5, expand=True)
+        # self.log_box.insert('end', '\n'.join(self.log_messages) + '\n')
+        # self.log_box.config(state='disabled')
 
         btn_frame = ttk.Frame(self.root)
         btn_frame.pack(fill='x', side='bottom')
@@ -240,9 +308,16 @@ class GameGUI:
         self.log_messages.append(message)
         if len(self.log_messages) > 100:
             self.log_messages.pop(0)
+        self.clear()
+        self.setup_log_box()
+        self.setup_player_stats_box()
+        # if hasattr(self, 'log_box'):
+        #     self.log_box.config(state='normal')
+        #     self.log_box.insert('end', message + '\n')
+        #     self.log_box.see('end')
+        #     self.log_box.config(state='disabled')
 
-        wealth_snapshot = [round(p.literacy + p.capital, 2) for p in self.players]
-        self.wealth_log.append(wealth_snapshot)
+
 
     # #log_turn v2
     # def log_turn(self, message):
@@ -274,6 +349,24 @@ class GameGUI:
         for round_index, round_wealth in enumerate(self.wealth_log, 1):
             values = [f"{round_index}"] + round_wealth
             tree.insert('', 'end', values=values)
+
+    def show_diplomacy_matrix(self):
+        top = tk.Toplevel(self.root)
+        top.title("Diplomacy Matrix")
+
+        header = ["Player"] + [p.name for p in self.players]
+        for col, name in enumerate(header):
+            ttk.Label(top, text=name, borderwidth=1, relief="solid", width=15).grid(row=0, column=col)
+
+        for i, player_row in enumerate(self.players):
+            ttk.Label(top, text=player_row.name + " to", borderwidth=1, relief="solid", width=15).grid(row=i+1, column=0)
+            for j, player_col in enumerate(self.players):
+                if player_row == player_col:
+                    cell_text = "-"
+                else:
+                    cell_text = f"{player_row.diplomacy.get(player_col.name, 0):.2f}"
+                ttk.Label(top, text=cell_text, borderwidth=1, relief="solid", width=15).grid(row=i+1, column=j+1)
+
 
     def play_card(self, choice):
         player = self.players[self.current_player_index]
@@ -307,7 +400,7 @@ class GameGUI:
                 )
 
         elif choice == 'D':
-            partner = random.choice([p for p in self.players if p != player])
+            partner = self.choose_partner(player,"Diplomacy")
             old_dip = player.diplomacy[partner.name]
             if roll >= threshold:
                 player.diplomacy[partner.name] += card.pay_off
@@ -325,7 +418,7 @@ class GameGUI:
                 )
 
         elif choice == 'T':
-            partner = random.choice([p for p in self.players if p != player])
+            partner = self.choose_partner(player,"Trade")
             old_lit = player.literacy
             old_cap = player.capital
             if roll >= threshold:
