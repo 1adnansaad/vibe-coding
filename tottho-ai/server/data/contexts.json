@@ -1,0 +1,115 @@
+[
+  {
+    "fileId": 1759399042720,
+    "fileName": "FAQ Info for Pickaboo (1).xlsx",
+    "fileType": "excel",
+    "fileSize": "58.1 KB",
+    "uploadDate": "2025-10-02T09:57:22.720Z",
+    "isSingleSheet": false,
+    "fileContext": "## E-commerce Platform for Electronics and Home Appliances\n\nThis database is designed to support an e-commerce website specializing in electronics and home appliances. It stores information about products, categories, brands, and frequently asked questions (FAQs) to provide a comprehensive and user-friendly online shopping experience.",
+    "sheetContexts": {
+      "Products": "*Purpose*: This table holds detailed information about each product available for sale.\n",
+      "FAQ": "*Purpose*: This table stores frequently asked questions and their corresponding answers to assist customers with common queries.\n"
+    },
+    "columnContexts": {
+      "Products": {
+        "Product Name": " The full name of the product, including model or key features. ",
+        "Category": "The identifier for the product's category",
+        "Brands": "The identifier for the product's brand",
+        "Description": "A detailed description of the product's features and practical implications."
+      },
+      "FAQ": {
+        "Question": "The text of the frequently asked question. ",
+        "Topic": "The topic or category of the FAQ (e.g., \"Ordering & Account\", \"Payments\"). |",
+        "Answer": "The detailed answer to the question. |"
+      }
+    },
+    "dataStructure": {
+      "sheets": [
+        {
+          "name": "Products",
+          "rowCount": 100,
+          "columnCount": 4,
+          "headers": [
+            "Product Name",
+            "Category",
+            "Brands",
+            "Description"
+          ],
+          "sampleData": [
+            [
+              "Samsung Galaxy S24 Ultra 5G (12GB/256GB)",
+              "Smartphones",
+              "Samsung",
+              "The Samsung Galaxy S24 Ultra 5G (12GB/256GB) is a flagship smartphone boasting cutting-edge features and top-tier specifications. Key features include a robust titanium frame, an upgraded S Pen with improved latency, and a powerful AI-driven camera system. The device sports a stunning 6.8-inch Dynamic AMOLED 2X display, offering vibrant colors and incredible brightness. Under the hood, it's powered by the latest Snapdragon 8 Gen 3 for Galaxy, ensuring lightning-fast performance and efficient multitasking. With 12GB of RAM and 256GB of internal storage, users can expect seamless app usage and ample space for media.\n\nPractical implications of the S24 Ultra's capabilities are vast. Its advanced camera, including a 200MP main sensor and enhanced zoom capabilities, makes it ideal for professional-grade photography and videography, even in low-light conditions. The integrated S Pen is perfect for note-taking, precise editing, and creative tasks, appealing to professionals and artists alike. Furthermore, the device's robust performance handles demanding applications and gaming with ease, offering a smooth user experience. The 5G connectivity ensures rapid downloads and uploads, making it suitable for users who require constant, high-speed access to online content. Its long-lasting battery also supports extensive daily use without frequent recharges, catering to busy individuals."
+            ],
+            [
+              "Xiaomi Redmi Note 13 Pro 5G (8GB/256GB)",
+              "Smartphones",
+              "Xiaomi",
+              "The Xiaomi Redmi Note 13 Pro 5G (8GB/256GB) is a mid-range smartphone offering a compelling balance of performance, storage, and connectivity. Key features include its 5G capability for faster downloads and smoother streaming, and a generous 8GB of RAM paired with 256GB of internal storage, providing ample space for apps, photos, and videos while ensuring smooth multitasking.\n\nFrom a specifications standpoint, users can expect a vibrant display, likely an AMOLED panel, for rich colors and deep blacks, a high refresh rate for fluid scrolling, and a capable camera system, often highlighted by a high-megapixel main sensor for detailed photos. The 5G connectivity is crucial for modern usage, supporting the latest network speeds. Powering the device is typically a mid-range Snapdragon or MediaTek processor, ensuring responsive performance for daily tasks and moderate gaming.\n\nPractically, this phone is ideal for users who consume a lot of media, enjoy mobile gaming, or require substantial storage without breaking the bank. The 5G support makes it future-proof for evolving network infrastructures, and the 8GB RAM ensures that even demanding applications run without significant slowdowns. It's a solid choice for those seeking a feature-rich smartphone that delivers reliable performance for everyday use and beyond."
+            ],
+            [
+              "OnePlus 12R (16GB/256GB)",
+              "Smartphones",
+              "OnePlus",
+              "The OnePlus 12R (16GB/256GB) is a high-performance smartphone designed for users who demand speed and ample storage. Key features include a powerful processor (often a Snapdragon 8 Gen 2 or similar), a vibrant AMOLED display with a high refresh rate for smooth visuals, and a robust camera system. The 16GB of RAM ensures seamless multitasking and efficient handling of demanding applications and games, while the 256GB of internal storage provides generous space for apps, photos, videos, and other files without the need for frequent clearing.\n\nFrom a practical standpoint, the OnePlus 12R is ideal for mobile gamers, content creators, and power users. Its powerful hardware translates to quick app launches, fluid navigation, and a superior gaming experience with high frame rates. The large storage capacity means users can download numerous apps and store extensive media libraries without performance degradation. The advanced camera system allows for capturing high-quality photos and videos, making it suitable for documenting everyday life or creating content. Additionally, OnePlus devices are known for their fast charging capabilities, minimizing downtime and keeping users connected throughout the day. This combination of top-tier specifications and user-centric features makes the OnePlus 12R a compelling choice for those seeking a reliable and high-performing smartphone experience."
+            ],
+            [
+              "realme C67 (8GB/128GB)",
+              "Smartphones",
+              "realme",
+              "The realme C67 (8GB/128GB) is a smartphone designed to offer a balanced user experience with a focus on smooth performance and ample storage. Featuring 8GB of RAM, this device ensures fluid multitasking and responsive app usage, making it suitable for everyday productivity and light gaming. The generous 128GB of internal storage provides substantial space for photos, videos, applications, and documents, mitigating concerns about running out of room. Practically, this configuration means users can enjoy a reliable mobile experience without constant data management. Its specifications cater to users who prioritize efficiency and storage capacity, ensuring a capable device for communication, entertainment, and general daily tasks."
+            ],
+            [
+              "Infinix Hot 40 Pro (8GB/256GB)",
+              "Smartphones",
+              "Infinix",
+              "The Infinix Hot 40 Pro (8GB/256GB) is a smartphone designed to offer a balance of performance and affordability. Key features often include a large, high-refresh-rate display for smooth visuals, a powerful processor for gaming and multitasking, and a high-resolution camera system for capturing detailed photos. Relevant specifications typically involve its 8GB of RAM, ensuring efficient app handling and responsiveness, and a spacious 256GB of internal storage, providing ample room for apps, photos, videos, and other files. Practical implications of these features mean that users can enjoy an immersive viewing experience, handle demanding applications and games without significant lag, and store a vast amount of digital content without worrying about running out of space. The device often targets users who prioritize strong battery life and a good multimedia experience without breaking the bank. Its combination of robust memory, generous storage, and a focus on user experience makes it a practical choice for everyday smartphone tasks and entertainment."
+            ]
+          ]
+        },
+        {
+          "name": "FAQ",
+          "rowCount": 35,
+          "columnCount": 3,
+          "headers": [
+            "Question",
+            "Topic",
+            "Answer"
+          ],
+          "sampleData": [
+            [
+              "How do I place an order on your website?",
+              "Ordering & Account",
+              "Simply select the product(s) you wish to purchase, add them to your cart, and proceed to checkout. You will be prompted to log in or provide your delivery and payment details to complete the order."
+            ],
+            [
+              "Do I need an account to shop?",
+              "Ordering & Account",
+              "While you can often checkout as a guest, we recommend creating an account to track your orders, manage your purchase history, save your addresses, and access exclusive loyalty program benefits."
+            ],
+            [
+              "How can I modify or cancel my order after placing it?",
+              "Ordering & Account",
+              "Order modifications or cancellations are only possible before the order has been processed and shipped. Please contact our customer support immediately with your order number to check if changes can be made."
+            ],
+            [
+              "How do I know if a product is in stock?",
+              "Ordering & Account",
+              "The product page will display the current stock status. If a product is out of stock, it will usually be marked as \"Sold Out\" or \"Currently Unavailable.\""
+            ],
+            [
+              "What should I do if I forget my account password?",
+              "Ordering & Account",
+              "On the login page, click the \"Forgot Password\" link. Enter your registered email address, and a link to reset your password will be sent to your inbox."
+            ]
+          ]
+        }
+      ]
+    },
+    "markdownContent": "# FAQ Info for Pickaboo (1) - Data Context Documentation\n\n**File Name:** FAQ Info for Pickaboo (1).xlsx\n**File Type:** EXCEL\n**File Size:** 58.1 KB\n**Upload Date:** 10/2/2025, 3:57:22 PM\n**Number of Sheets:** 2\n\n## File Overview\n\n## E-commerce Platform for Electronics and Home Appliances\n\nThis database is designed to support an e-commerce website specializing in electronics and home appliances. It stores information about products, categories, brands, and frequently asked questions (FAQs) to provide a comprehensive and user-friendly online shopping experience.\n\n## Sheet 1: Products\n\n**Sheet Description:** *Purpose*: This table holds detailed information about each product available for sale.\n\n\n**Total Rows:** 100\n**Total Columns:** 4\n\n### Column Descriptions\n\n| Column Name | Description |\n|-------------|-------------|\n| Product Name |  The full name of the product, including model or key features.  |\n| Category | The identifier for the product's category |\n| Brands | The identifier for the product's brand |\n| Description | A detailed description of the product's features and practical implications. |\n\n### Data Preview\n\n| Product Name | Category | Brands | Description |\n|---|---|---|---|\n| Samsung Galaxy S24 Ultra 5G (12GB/256GB) | Smartphones | Samsung | The Samsung Galaxy S24 Ultra 5G (12GB/256GB) is a flagship smartphone boasting cutting-edge features and top-tier specifications. Key features include a robust titanium frame, an upgraded S Pen with improved latency, and a powerful AI-driven camera system. The device sports a stunning 6.8-inch Dynamic AMOLED 2X display, offering vibrant colors and incredible brightness. Under the hood, it's powered by the latest Snapdragon 8 Gen 3 for Galaxy, ensuring lightning-fast performance and efficient multitasking. With 12GB of RAM and 256GB of internal storage, users can expect seamless app usage and ample space for media.\n\nPractical implications of the S24 Ultra's capabilities are vast. Its advanced camera, including a 200MP main sensor and enhanced zoom capabilities, makes it ideal for professional-grade photography and videography, even in low-light conditions. The integrated S Pen is perfect for note-taking, precise editing, and creative tasks, appealing to professionals and artists alike. Furthermore, the device's robust performance handles demanding applications and gaming with ease, offering a smooth user experience. The 5G connectivity ensures rapid downloads and uploads, making it suitable for users who require constant, high-speed access to online content. Its long-lasting battery also supports extensive daily use without frequent recharges, catering to busy individuals. |\n| Xiaomi Redmi Note 13 Pro 5G (8GB/256GB) | Smartphones | Xiaomi | The Xiaomi Redmi Note 13 Pro 5G (8GB/256GB) is a mid-range smartphone offering a compelling balance of performance, storage, and connectivity. Key features include its 5G capability for faster downloads and smoother streaming, and a generous 8GB of RAM paired with 256GB of internal storage, providing ample space for apps, photos, and videos while ensuring smooth multitasking.\n\nFrom a specifications standpoint, users can expect a vibrant display, likely an AMOLED panel, for rich colors and deep blacks, a high refresh rate for fluid scrolling, and a capable camera system, often highlighted by a high-megapixel main sensor for detailed photos. The 5G connectivity is crucial for modern usage, supporting the latest network speeds. Powering the device is typically a mid-range Snapdragon or MediaTek processor, ensuring responsive performance for daily tasks and moderate gaming.\n\nPractically, this phone is ideal for users who consume a lot of media, enjoy mobile gaming, or require substantial storage without breaking the bank. The 5G support makes it future-proof for evolving network infrastructures, and the 8GB RAM ensures that even demanding applications run without significant slowdowns. It's a solid choice for those seeking a feature-rich smartphone that delivers reliable performance for everyday use and beyond. |\n| OnePlus 12R (16GB/256GB) | Smartphones | OnePlus | The OnePlus 12R (16GB/256GB) is a high-performance smartphone designed for users who demand speed and ample storage. Key features include a powerful processor (often a Snapdragon 8 Gen 2 or similar), a vibrant AMOLED display with a high refresh rate for smooth visuals, and a robust camera system. The 16GB of RAM ensures seamless multitasking and efficient handling of demanding applications and games, while the 256GB of internal storage provides generous space for apps, photos, videos, and other files without the need for frequent clearing.\n\nFrom a practical standpoint, the OnePlus 12R is ideal for mobile gamers, content creators, and power users. Its powerful hardware translates to quick app launches, fluid navigation, and a superior gaming experience with high frame rates. The large storage capacity means users can download numerous apps and store extensive media libraries without performance degradation. The advanced camera system allows for capturing high-quality photos and videos, making it suitable for documenting everyday life or creating content. Additionally, OnePlus devices are known for their fast charging capabilities, minimizing downtime and keeping users connected throughout the day. This combination of top-tier specifications and user-centric features makes the OnePlus 12R a compelling choice for those seeking a reliable and high-performing smartphone experience. |\n\n*Showing first 3 rows of 100 total rows.*\n\n## Sheet 2: FAQ\n\n**Sheet Description:** *Purpose*: This table stores frequently asked questions and their corresponding answers to assist customers with common queries.\n\n\n**Total Rows:** 35\n**Total Columns:** 3\n\n### Column Descriptions\n\n| Column Name | Description |\n|-------------|-------------|\n| Question | The text of the frequently asked question.  |\n| Topic | The topic or category of the FAQ (e.g., \"Ordering & Account\", \"Payments\"). | |\n| Answer | The detailed answer to the question. | |\n\n### Data Preview\n\n| Question | Topic | Answer |\n|---|---|---|\n| How do I place an order on your website? | Ordering & Account | Simply select the product(s) you wish to purchase, add them to your cart, and proceed to checkout. You will be prompted to log in or provide your delivery and payment details to complete the order. |\n| Do I need an account to shop? | Ordering & Account | While you can often checkout as a guest, we recommend creating an account to track your orders, manage your purchase history, save your addresses, and access exclusive loyalty program benefits. |\n| How can I modify or cancel my order after placing it? | Ordering & Account | Order modifications or cancellations are only possible before the order has been processed and shipped. Please contact our customer support immediately with your order number to check if changes can be made. |\n\n*Showing first 3 rows of 35 total rows.*\n\n## Metadata\n\n- **Generated by:** tottho.ai Data Upload System\n- **Generation Date:** 10/2/2025, 3:57:22 PM\n- **File Structure:** Multi-Sheet\n",
+    "savedAt": "2025-10-02T09:57:22.749Z",
+    "id": "ctx_1759399042750_irfrsnu25"
+  }
+]
